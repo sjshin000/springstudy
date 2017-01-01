@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:couchbase="http://www.springframework.org/schema/data/couchbase"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/data/couchbase
+    					http://www.springframework.org/schema/data/couchbase/spring-couchbase.xsd">
+						
+	<bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${sample.driverClassName}"/>
+		<property name="url" value="${sample.url}"/>
+		<property name="username" value="${sample.username}"/>
+		<property name="password" value="${sample.password}"/>
+		<property name="initialSize" value="${sample.initialSize}" />
+		<property name="maxWait" value="${sample.maxWait}" />
+		<property name="maxActive" value="${sample.maxActive}" />
+		<property name="validationQuery" value="${sample.validationQuery}" />
+		<property name="testOnBorrow" value="${sample.testOnBorrow}" />
+		<property name="testOnReturn" value="${sample.testOnReturn}" />
+		<property name="testWhileIdle" value="${sample.testWhileIdle}" />
+		<property name="maxIdle" value="${sample.maxIdle}" />
+		<property name="minIdle" value="${sample.minIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${sample.timeBetweenEvictionRunsMillis}" />
+	</bean>	
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="datasource"/>
+		<property name="mapperLocations" value="classpath*:sqlmap/**/*.xml"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+	</bean>
+
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+      <constructor-arg index="0" ref="sqlSessionFactory" /> 
+    </bean>
+
+</beans>

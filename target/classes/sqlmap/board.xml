@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="board">
+
+	<insert id="insert" parameterType="com.ssj.springstudy.board.model.Board">
+    <![CDATA[     
+		INSERT INTO board (
+		   title
+        	,description
+        	,writer
+        	,creatDate
+        	,hit
+		) VALUES (
+		    #{title}
+			,#{description}
+			,#{writer}
+			,now()
+			,0
+		)
+	]]>		
+    </insert>   
+   
+    <select id="select" parameterType = "int" resultType="com.ssj.springstudy.board.model.Board">   
+    <![CDATA[
+        SELECT
+        	boardId
+        	, title
+        	, description
+        	, writer
+        	, creatDate
+        	, updateDate
+        	, hit
+        FROM board
+        WHERE boardId = #{boardId}
+	]]>
+    </select>
+    
+   	<update id="update" parameterType="com.ssj.springstudy.board.model.Board">
+    <![CDATA[
+		UPDATE board SET 
+		   title = #{title}
+        	,description = #{description}
+        	,writer = #{writer}
+		WHERE 
+		    boardId = #{boardId}
+	]]>		
+    </update>  
+    
+    <select id="selectList" parameterType="com.ssj.springstudy.common.model.PageNavigationModel" resultType="com.ssj.springstudy.board.model.Board">
+    <![CDATA[
+        SELECT
+        	boardId
+        	, title
+        	, description
+        	, writer
+        	, creatDate
+        	, updateDate
+        	, hit
+        FROM board 
+        WHERE boardId >= #{pageStartNumber} AND boardId <= #{pageEndNumber}
+        ORDER BY boardId DESC
+	]]>
+    </select>
+
+    <delete id="delete" parameterType = "int" >   
+    <![CDATA[
+        DELETE FROM board
+        WHERE 
+        	boardId = #{boardId}
+	]]>
+    </delete>
+
+    <select id="getBoardListTotalCount" resultType = "int">
+        SELECT COUNT(boardId)
+        FROM `board`
+    </select>
+</mapper>
